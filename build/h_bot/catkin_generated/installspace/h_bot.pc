@@ -1,0 +1,8 @@
+prefix=/home/zihao/catkin_ws/install
+
+Name: h_bot
+Description: Description of h_bot
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/zihao/catkin_ws/install/lib 
+Requires: 

@@ -14,7 +14,9 @@ int main(int argc, char **argv)
 	// it's actually a if-sentence, not 100% executed
 	ros::Subscriber sub = n.subscribe("chatter",1000,chatterCallback);
 
-	// detecting, if ros.ok()=false, then break the loop here	
+	// detecting, if ros.ok()=false, then break the loop here
+	// and check if we need to call the "chatterCallback()"	
 	ros::spin();
+
 	return 0;
 }
