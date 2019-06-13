@@ -11,7 +11,12 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  tf
+  gmapping
+  cv_bridge
 )
+
+find_package(OpenCV REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -107,6 +112,9 @@ catkin_package(
 #  LIBRARIES h_bot
 #  CATKIN_DEPENDS roscpp rospy std_msg
 #  DEPENDS system_lib
+    CATKIN_DEPENDS
+      roscpp
+      cv_bridge
 )
 
 ###########
@@ -117,7 +125,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-  ${catkin_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -134,6 +142,9 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/h_bot_node.cpp)
+
+add_executable(map_reader src/map_reader.cpp)
+target_link_libraries(map_reader ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
