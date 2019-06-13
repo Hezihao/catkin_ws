@@ -143,8 +143,8 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/h_bot_node.cpp)
 
-add_executable(map_reader src/map_reader.cpp)
-target_link_libraries(map_reader ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_executable(map_cv_reader src/map_cv_reader.cpp)
+target_link_libraries(map_cv_reader ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
