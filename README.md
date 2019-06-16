@@ -4,3 +4,9 @@ In order to run this, please have:
 - ROS-kinetic
 - Gazebo 8
 - other packages mentioned in "CMakeLists.txt"
+
+The project "h_bot" is the simulation of a mobile robot with LiDAR and camera on board.
+- The agent in gazebo looks like:
+![image](https://github.com/Hezihao/catkin_ws/blob/master/IMG/Screenshot%20from%202019-06-17%2001-15-08.png)
+- The map built by robot with SLAM:
+![image](https://github.com/Hezihao/catkin_ws/blob/master/IMG/Screenshot%20from%202019-06-17%2001-14-19.png)
