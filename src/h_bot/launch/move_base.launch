@@ -6,10 +6,10 @@
   <!-- To build the map simultaneously we need to run pkg: gmapping.-->
   <!--> 
   <node  pkg="map_server" type="map_server" name="map_server" args="$(find h_bot)/maps/map.yaml" output="screen"/>
-  <-->
+
   <include file="$(find amcl)/examples/amcl_diff.launch" >
   </include> 
-
+  <-->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <rosparam file="$(find h_bot)/launch/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find h_bot)/launch/costmap_common_params.yaml" command="load" ns="local_costmap" />

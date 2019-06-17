@@ -144,7 +144,7 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/h_bot_node.cpp)
 
 add_executable(map_cv_reader src/map_cv_reader.cpp)
-target_link_libraries(map_cv_reader ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_executable(goal_sender src/goal_sender.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -160,6 +160,16 @@ target_link_libraries(map_cv_reader ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
+target_link_libraries(
+	map_cv_reader 
+	${catkin_LIBRARIES} 
+	${OpenCV_LIBRARIES}
+)
+
+target_link_libraries(
+	goal_sender
+	${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
