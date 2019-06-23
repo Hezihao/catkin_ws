@@ -1,4 +1,4 @@
-## catkin_ws
+# catkin_ws
 In order to run this, please have:
 - Ubuntu 16.04
 - ROS-kinetic
