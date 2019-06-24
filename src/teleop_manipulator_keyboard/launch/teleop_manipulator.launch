@@ -1,0 +1,13 @@
+<launch>
+  <include file="$(find panda_moveit_config)/launch/planning_context.launch">
+    <arg name="load_robot_description" value="true"/>
+  </include>
+
+  <node name="teleop_manipulator_keyboard"
+        pkg="teleop_manipulator"
+        type="teleop_panda_manipulator_keyboard"
+        respawn="false" output="screen">
+    <rosparam command="load"
+              file="$(find panda_moveit_config)/config/kinematics.yaml"/>
+  </node>
+</launch>

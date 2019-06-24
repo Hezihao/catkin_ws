@@ -168,6 +168,8 @@ link_directories(
 add_executable(teleop_manipulator_keyboard src/teleop_manipulator.cpp)
 target_link_libraries(teleop_manipulator_keyboard ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
+add_executable(teleop_panda_manipulator_keyboard src/teleop_manipulator_panda.cpp)
+target_link_libraries(teleop_panda_manipulator_keyboard ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use

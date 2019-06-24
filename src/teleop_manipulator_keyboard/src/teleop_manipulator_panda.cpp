@@ -3,23 +3,21 @@
 #include <unistd.h>
 
 #include <map>
-#include <vector>
+//#include <vector>
 
 #include <ros/ros.h>
 
-#include <std_msgs/Float64MultiArray.h>
-#include <std_msgs/MultiArrayDimension.h>
-#include <std_msgs/Float64.h>
+#include <moveit/move_group_interface/move_group.h>
+#include <moveit_msgs/DisplayTrajectory.h>
+
 
 using namespace std;
 
-// Definition of global variables
+const float pi = 3.1415926;
 int key(0);
 float x(0),y(0),z(0),step(0.2);
-std_msgs::Float64MultiArray pose;
-vector<std_msgs::Float64> init = [0, 0, 0, 0, 0, 0, 0];
+geometry_msgs::Pose goal;
 
-// Instructions of using
 const char* msg = R"(
 Reading from the keyboard and Publishing.
 ---------------------------
@@ -41,7 +39,6 @@ step = 0.2;
 CTRL-C to quit
 )";
 
-// Map of instructions
 map<char, vector<float>> moveBindings
 {
   //translation along
@@ -86,20 +83,26 @@ int getch(void)
 
 void init_Goal()
 {
-	std_msgs::MultiArrayDimension d;
-	d->label = " ";
-	d->size = 2;
-	d->stride = 1;
-	pose->layout.dim = d;
-	pose->data
-	init = [0, 0, 0, -0.5, 0, 0.5, 0.75];
-
+    	goal.orientation.x = -0.000764819;
+    	goal.orientation.y = 0.0366097;
+    	goal.orientation.z = 0.00918912;
+    	goal.orientation.w = 0.999287;
+    	goal.position.x = 0.775884;
+    	goal.position.y = 0.43172;
+    	goal.position.z = 2.71809;
 	cout<<"Initialized!"<<endl;
 }
 
 void set_newGoal()
 {
+	goal.position.x = x + goal.position.x;
+	goal.position.y = y + goal.position.y;
+	goal.position.z = z + goal.position.z;
 
+	goal.orientation.x = goal.orientation.x;
+    	goal.orientation.y = goal.orientation.y;
+    	goal.orientation.z = goal.orientation.z;
+    	goal.orientation.w = goal.orientation.w;
 }
 int main(int argc, char **argv)
 {
@@ -110,7 +113,10 @@ int main(int argc, char **argv)
     	spin.start();
 
 	// Set up publisher
-	ros::Publisher pub = nh.advertise<std_msgs::Float64MultiArray>("/franka/gripper_position_controller/command", 1, true);
+	ros::Publisher display_pub = nh.advertise<moveit_msgs::DisplayTrajectory>("/move_group/display_planned_path", 1, true);
+
+	// Choose arm as planning group
+	moveit::planning_interface::MoveGroup plan_group("panda_arm");
 
 	while(true)
 	{
@@ -137,7 +143,18 @@ int main(int argc, char **argv)
 			{
 				init_Goal();
 			}
-			// Execution of motion
+			plan_group.setGoalTolerance(0.1);
+			plan_group.setPoseTarget(goal);
+			moveit::planning_interface::MoveGroup::Plan goal_plan;
+
+			if(plan_group.plan(goal_plan))
+			{
+				moveit_msgs::DisplayTrajectory display_msg;
+				display_msg.trajectory_start = goal_plan.start_state_;
+				display_msg.trajectory.push_back(goal_plan.trajectory_);
+				display_pub.publish(display_msg);
+				plan_group.move();
+			}
 			key = 0;
 		}
 	}
