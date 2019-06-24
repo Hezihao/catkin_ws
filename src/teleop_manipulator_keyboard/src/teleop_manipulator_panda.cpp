@@ -31,11 +31,11 @@ Moving around:
 ---------------------------
 Correlation with axis:
 -x: 1	+x: 3
--y: 6	+y: 4
+-y: 4	+y: 6
 -z: 2	+z: 8
      brake: 5
 ---------------------------
-step = 0.2;
+step = 0.05;
 CTRL-C to quit
 )";
 
@@ -87,9 +87,9 @@ void init_Goal()
     	goal.orientation.y = 0.0366097;
     	goal.orientation.z = 0.00918912;
     	goal.orientation.w = 0.999287;
-    	goal.position.x = 0.775884;
-    	goal.position.y = 0.43172;
-    	goal.position.z = 2.71809;
+    	goal.position.x = 0;
+    	goal.position.y = 0.2;
+    	goal.position.z = 0.7;
 	cout<<"Initialized!"<<endl;
 }
 
@@ -103,6 +103,7 @@ void set_newGoal()
     	goal.orientation.y = goal.orientation.y;
     	goal.orientation.z = goal.orientation.z;
     	goal.orientation.w = goal.orientation.w;
+	cout<<"position = ("<<goal.position.x<<", "<<goal.position.y<<", "<<goal.position.z<<" )"<<endl;
 }
 int main(int argc, char **argv)
 {
