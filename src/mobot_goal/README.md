@@ -3,6 +3,7 @@ In order to test this pkg, please have:
 - Ubuntu 16.04
 - ROS-kinetic
 - Gazebo
+- pkg: h_bot
 
 Commands needed are:
 - $ roslaunch mobot_goal goal_list_sender.launch
