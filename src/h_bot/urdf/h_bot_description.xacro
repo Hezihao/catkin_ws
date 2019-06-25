@@ -28,7 +28,7 @@
    		</visual>
 		<xacro:default_inertial mass="0.0001"/>
  	</link>
- 	<xacro:include filename="$(find robot1_description)/urdf/robot.gazebo" />
+ 	<xacro:include filename="$(find h_bot)/urdf/robot.gazebo" />
  
 	<gazebo reference="base_footprint">
 		<material>Gazebo/Green</material>
@@ -57,7 +57,7 @@
        				<box size="0.2 .3 0.1"/>
 			</geometry>
 		</collision>
-		<xacro:default_inertial mass="10"/>
+		<xacro:default_inertial mass="8"/>
  	</link>
 
  	<link name="wheel_1">
