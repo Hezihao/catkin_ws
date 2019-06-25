@@ -7,7 +7,7 @@ In order to test this pkg, please have:
 
 Commands needed are:
 - $ roslaunch mobot_goal goal_list_sender.launch
-- $ rosrun mobot_goal goal_list_sender.cpp
+- $ rosrun mobot_goal goal_list_sender
 
 While running the test, following things could be observed:
 - Rviz showing planned path & current goal etc.:
