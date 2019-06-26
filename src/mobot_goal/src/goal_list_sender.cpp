@@ -63,7 +63,7 @@ int main(int argc, char** argv){
 	ros::NodeHandle nh;
 
 	// EXERCISE 1.1: 2) Load a list of goals from a .yaml file:
-	//		 *  Secified in the "map" coordinate system & visible in rviz;
+	//		 *  Specified in the "map" coordinate system & visible in rviz;
 	//		 *  Each goal is an 1x3 vector and consists of (x,y,w);
 	vector< vector<float> >goal_list = read_goal_list(nh);
 	const vector<float>orientation_axis = {0.0, 0.0, 1.0};
