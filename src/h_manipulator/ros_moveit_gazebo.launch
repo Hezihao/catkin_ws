@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="world" default="empty"/>
+  <arg name="gzpose" default="-x 0 -y 0 -z 0.0 -R 0.0 -P 0.0 -Y 0.0"/>
+  <arg name="gui" default="true"/>
+  <arg name="debug" default="false"/>
+
+  <env name="GAZEBO_MODEL_PATH" value="$(find rosbook_arm_gazebo)/models:$(optenv GAZEBO_MODEL_PATH)"/>
+
+  <!-- Robot model -->
+  <param name="robot_description" command="cat '$(find h_manipulator)/urdf/panda.urdf'"/>
+  <!-- PID gains -->
+  <rosparam file="$(find panda_moveit_config)/config/pids.yaml" command="load"/>
+  <!-- Joint trajectory controllers -->
+  <rosparam file="$(find panda_moveit_config)/config/joint_trajectory_controllers.yaml" command="load"/>
+  <!-- Joint limits -->
+  <rosparam file="$(find panda_moveit_config)/config/joint_limits.yaml" command="load"/>
+
+  <!-- Start up world, to be updated... -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" default="$(find rosbook_arm_gazebo)/worlds/$(arg world).world"/>
+    <arg name="gui" default="$(arg gui)"/>
+    <arg name="debug" default="$(arg debug)"/>
+  </include>
+
+  <!-- Spawn robot in simulation -->
+  <!-->
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_model" respawn="false" output="screen"
+        args="-urdf -param robot_description $(arg gzpose) -model panda_model"/>
+  <-->
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_model" respawn="false" output="screen"
+        args="-urdf -param robot_description -model panda"/>
+
+  <!-- Bring up robot -->
+  <!-- Load default controllers -->
+  <!-- Joint state controller -->
+  <rosparam file="$(find joint_state_controller)/joint_state_controller.yaml" command="load"/>
+  <!-- Default controllers -->
+  <node pkg="controller_manager" type="spawner" name="default_controllers_spawner"
+        args="joint_state_controller
+              arm_controller
+              gripper_controller"/>
+
+  <!-- Robot state publisher -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" value="50.0"/>
+    <param name="tf_prefix" value=""/>
+    </node>
+
+  <!-- Motion planning -->
+
+
+
+</launch>
