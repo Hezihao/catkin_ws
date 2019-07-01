@@ -10,11 +10,11 @@ using namespace std;
 
 float x_limit(0.5);
 float theta_limit(3.1416);
+geometry_msgs::Twist vel;
 
 void callBack(const sensor_msgs::Joy::ConstPtr& joy) {
 	// here we finish the tasks of reading velocity from joystick and 
 	// publishing it to robot after rescaling it.
-	geometry_msgs::Twist vel;
 	vel.linear.x = x_limit * joy->axes[0];
 	vel.angular.z = theta_limit * joy->axes[1];
 }
@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 	// this node subscribes msgs of type: sensor_msgs/Joy
 	ros::Subscriber sub;
 	while(ros::ok()) {
-		pub = nh.advertise<geometry_msgs/Twist>("/cmd_vel", 1);
+		pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
 		// Need to figure out: what does this 1 mean?
 		sub = nh.subscribe("joy",100,callBack);
 		pub.publish(vel);
