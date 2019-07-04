@@ -4,17 +4,19 @@
   <!-- Run the map server -->
   <!-- And the map server here just constantly publishing the same static map from the file below. -->
   <!-- To build the map simultaneously we need to run pkg: gmapping.-->
-  <!--> 
+
+  <node pkg="map_server" type="map_saver" name="map_saver" args="-f $(find h_bot)/maps/map.yaml" />
+
   <node  pkg="map_server" type="map_server" name="map_server" args="$(find h_bot)/maps/map.yaml" output="screen"/>
 
   <include file="$(find amcl)/examples/amcl_diff.launch" >
   </include> 
-  <-->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <rosparam file="$(find h_bot)/launch/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find h_bot)/launch/costmap_common_params.yaml" command="load" ns="local_costmap" />
     <rosparam file="$(find h_bot)/launch/local_costmap_params.yaml" command="load" />
     <rosparam file="$(find h_bot)/launch/global_costmap_params.yaml" command="load" />
     <rosparam file="$(find h_bot)/launch/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find mobot_goal)/config/goal_list.yaml" command="load"/>
   </node>
 </launch>
