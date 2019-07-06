@@ -5,7 +5,6 @@
 
 	<remap from="robot/laser/scan" to="/scan" />
 
-
 	<include file="$(find gazebo_ros)/launch/willowgarage_world.launch" />
 	<arg name="model" default="$(find h_bot)/urdf/h_bot_description.xacro" />
 	<param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)" />
@@ -20,7 +19,9 @@
 	<node pkg="rviz" type="rviz" name="rviz" args="-d $(find h_bot)/launch/navigation.rviz" />
 
 	<node pkg="gmapping" type="slam_gmapping" name="slam_gmapping">
+		<!-->
 		<remap from="scan" to="/robot/laser/scan" />
+		<-->
 		<param name="base_link" value="base_footprint" />
 	</node>
 </launch>
