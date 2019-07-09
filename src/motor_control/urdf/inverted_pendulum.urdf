@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!-->The overall basic frame is robot tag.<-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" 
+ 	xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+    	xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+    	xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+	name="motor_xacro">
+
+	<xacro:property name="length_pendulum" value="0.4" />
+	<xacro:property name="radius_pendulum" value="0.02" />
+	<xacro:macro name="default_inertial" params="mass">
+		<inertial>
+			<mass value="${mass}" />
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                                iyy="1.0" iyz="0.0"
+                                izz="1.0" />
+		</inertial>
+	</xacro:macro>
+
+<!-->First part is the description of robot.<-->
+	<link name="motor">
+		<visual>
+			<geometry>
+				<box size="0.15 0.06 0.06"/>
+			</geometry>
+			<material name="white">
+				<color rgba="1 1 1 1" />
+			</material>
+		</visual>
+		<collision>
+			<geometry>
+				<box size="0.15 0.06 0.06" />
+			</geometry>
+		</collision>
+		<xacro:default_inertial mass="0.8" />
+	</link>
+
+	<link name="pendulum">
+		<visual>
+		</visual>
+		<collision>
+		</collision>
+		<xacro:default_inertial mass="1.3565" />
+	</link>
+
+	<joint>
+	</joint>
+
+<!-->Second part is the controller applied on the model.<-->
+<gazebo>
+	<plugin>
+	</plugin>
+</gazebo>
+</robot>
