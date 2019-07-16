@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<!-->The overall basic frame is robot tag.<-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" 
+ 	xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+    	xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+    	xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+	name="motor_xacro">
+
+	<xacro:property name="length_pendulum" value="0.40" />
+	<xacro:property name="radius_pendulum" value="0.02" />
+	<xacro:macro name="default_inertial" params="mass">
+		<inertial>
+			<mass value="${mass}" />
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                                iyy="1.0" iyz="0.0"
+                                izz="1.0" />
+		</inertial>
+	</xacro:macro>
+
+<!-->First part is the description of robot.<-->
+	<link name="world"/>
+
+	<link name="motor">
+		<visual>
+			<geometry>
+				<box size="0.15 0.06 0.06"/>
+			</geometry>
+			<origin rpy="0 0 0.03" xyz="0 0 0"/>
+			<material name="white">
+				<color rgba="1 1 1 1" />
+			</material>
+		</visual>
+		<collision>
+			<origin rpy="0 0 0.03" xyz="0 0 0"/>
+			<geometry>
+				<box size="0.15 0.06 0.06" />
+			</geometry>
+		</collision>
+		<!--xacro:default_inertial mass="0.8" /-->
+		<inertial>
+			<origin rpy="0 0 0.03" xyz="0 0 0"/>
+			<mass value="0.8" />
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                                iyy="1.0" iyz="0.0"
+                                izz="1.0" />
+		</inertial>
+	</link>
+
+	<link name="pendulum">
+		<visual>
+			<geometry>
+				<cylinder length="${length_pendulum}" radius="${radius_pendulum}" />
+			</geometry>
+			<origin rpy="0 0 0" xyz="0.16 0 ${length_pendulum/2}"/>
+			<material name="orange">
+				<color rgba="1 0.5 0.05 1" />
+			</material>
+		</visual>
+		<collision>
+			<origin rpy="0 0 0" xyz="0.16 0 ${length_pendulum/2}"/>
+			<geometry>
+				<cylinder length="${length_pendulum}" radius="${radius_pendulum}" />
+			</geometry>
+		</collision>
+		<!--xacro:default_inertial mass="1.3565" /-->
+		<inertial>
+			<origin rpy="0 0 0" xyz="0.16 0 ${length_pendulum/2}"/>
+			<mass value="1.3565" />
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                                iyy="1.0" iyz="0.0"
+                                izz="1.0" />
+		</inertial>
+	</link>
+
+	<link name="pendulum_2">
+		<visual>
+			<geometry>
+				<cylinder length="${length_pendulum}" radius="${radius_pendulum}" />
+			</geometry>
+			<origin rpy="0 0 0" xyz="0.16 0 ${length_pendulum*3/2}"/>
+			<material name="orange">
+				<color rgba="1 0.5 0.05 1" />
+			</material>
+		</visual>
+		<collision>
+			<origin rpy="0 0 0" xyz="0.16 0 ${length_pendulum*3/2}"/>
+			<geometry>
+				<cylinder length="${length_pendulum}" radius="${radius_pendulum}" />
+			</geometry>
+		</collision>
+		<inertial>
+			<origin rpy="0 0 0" xyz="0.16 0 ${length_pendulum*3/2}"/>
+			<mass value="1.3565" />
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                                iyy="1.0" iyz="0.0"
+                                izz="1.0" />
+		</inertial>
+	</link>
+
+	<joint name="world_to_motor" type="fixed">
+		<parent link="world"/>
+		<child link="motor"/>
+	</joint>
+
+	<joint name="motor_to_pendulum" type="continuous">
+		<parent link="motor" />
+		<child link="pendulum" />
+		<axis xyz="1 0 0" />
+		<origin rpy="-1.5707 0 0" xyz="0.16 0 0.03" />
+		<dynamics damping="0.5"/>
+	</joint>
+
+	<joint name="pendulum_to_pendulum_2" type="continuous">
+		<parent link="pendulum" />
+		<child link="pendulum_2" />
+		<axis xyz="1 0 0" />
+		<origin rpy="-1.5707 0 0" xyz="0.16 0 ${0.03+length_pendulum}" />
+		<dynamics damping="0.5"/>
+	</joint>
+
+	<transmission name="tran1">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="motor_to_pendulum">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="motor1">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+	</transmission>
+
+
+<!-->Second part is the controller applied on the model.<-->
+	<gazebo>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+			<robotNamespace>/inverted_pendulum</robotNamespace>
+			<legacyModeNS>true</legacyModeNS>
+		</plugin>
+	</gazebo>
+
+</robot>
